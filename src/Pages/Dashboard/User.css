@@ -1,0 +1,110 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+.wallet-page {
+  background: #f7f7f7;
+  min-height: 100vh;
+}
+
+
+.content {
+  padding: 15px;
+  max-width: 850px;
+  margin: auto;
+}
+
+/* Wallet Card */
+.wallet-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.wallet-img {
+  width: 60px;
+}
+.label {
+  color: gray;
+}
+
+/* Button */
+.transfer-btn {
+  width: 100%;
+  background: #a407ff;
+  color: white;
+  padding: 14px;
+  border: none;
+  font-size: 16px;
+  border-radius: 25px;
+  margin-top: 15px;
+  cursor: pointer;
+}
+
+/* Percent Row */
+.current-text {
+  margin-top: 25px;
+}
+.percent-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+
+/* Chart Section */
+.chart-container {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.dropdown {
+  padding: 6px;
+  border-radius: 4px;
+}
+.chart-icons {
+  float: right;
+  font-size: 22px;
+  margin-top: -30px;
+}
+.chart-box {
+  margin-top: 20px;
+  height: 160px;
+  background: linear-gradient(#c1d3ff, #e9f0ff);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Status Card */
+.status-card {
+  margin-top: 20px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+}
+.status-card h4 {
+  margin: 0 0 6px;
+}
+
+/* Desktop Responsive */
+@media (min-width: 768px) {
+  .content {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 22px;
+  }
+
+  .transfer-btn {
+    width: 60%;
+  }
+
+  .status-card {
+    grid-column: span 2;
+  }
+}
