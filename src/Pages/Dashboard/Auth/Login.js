@@ -4,25 +4,33 @@ import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = (e) => {
     e.preventDefault();
 
-    // TEMP DEMO (Replace with backend auth later)
     if (email === "admin@gmail.com" && password === "admin123") {
       localStorage.setItem("auth", "true");
+      localStorage.setItem("role", "admin");
       navigate("/dashboard");
-    } else {
-      alert("Incorrect Email or Password");
+      return;
     }
+
+    if (email === "user@gmail.com" && password === "user123") {
+      localStorage.setItem("auth", "true");
+      localStorage.setItem("role", "user");
+      navigate("/users");
+      return;
+    }
+
+    alert("Incorrect Email or Password");
   };
 
   return (
     <div className="login-container">
       <form className="login-box" onSubmit={handleLogin}>
-        <h2>SYSTEM WALLET </h2>
+        <h2>SYSTEM WALLET</h2>
         <p>Please login to continue</p>
 
         <input
@@ -42,8 +50,6 @@ const Login = () => {
         />
 
         <button type="submit">Login</button>
-
-        <span className="forgot">Forgot Password?</span>
       </form>
     </div>
   );

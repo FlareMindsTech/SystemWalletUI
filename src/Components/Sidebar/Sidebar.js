@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
-import {
-  MdDashboard,
-  MdPeople,
-  MdLogout,
-} from "react-icons/md";
+import { MdDashboard, MdPeople, MdLogout } from "react-icons/md";
 
 function Sidebar() {
   const navigate = useNavigate();
@@ -13,24 +8,32 @@ function Sidebar() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-  const menuItems = [
-    { name: "AdminManagemnt", path: "/dashboard", icon: <MdDashboard /> },
-    { name: "User Management", path: "/users", icon: <MdPeople /> },
-    { name: "Log out", path: "/logout", icon: <MdLogout /> },
-  ];
+  // Read stored auth data
+  const role = localStorage.getItem("role");
+
+  // Dynamic Sidebar Menu Based on Role
+  const menuItems =
+    role === "admin"
+      ? [
+          { name: "Dashboard", path: "/dashboard", icon: <MdDashboard /> },
+          { name: "Logout", path: "/logout", icon: <MdLogout /> },
+        ]
+      : [
+          { name: "User Management", path: "/users", icon: <MdPeople /> },
+          { name: "Logout", path: "/logout", icon: <MdLogout /> },
+        ];
 
   const confirmLogout = () => {
-    localStorage.removeItem("auth");
+    localStorage.clear();
     navigate("/");
   };
 
   const activeItem =
     menuItems.find((item) => location.pathname.startsWith(item.path))?.name ||
-    "Dashboard";
+    "";
 
   return (
     <>
-      {/* Sidebar */}
       <div style={styles.sidebar}>
         <div style={styles.title}>
           <div style={styles.titleText}>SYSTEM WALLET</div>
@@ -45,12 +48,9 @@ function Sidebar() {
             return (
               <li
                 key={item.name}
-                style={{
-                  ...styles.item,
-                  ...(isSelected ? styles.active : {}),
-                }}
+                style={{ ...styles.item, ...(isSelected ? styles.active : {}) }}
                 onClick={() => {
-                  if (item.name === "Log out") setShowLogoutModal(true);
+                  if (item.name === "Logout") setShowLogoutModal(true);
                   else navigate(item.path);
                 }}
                 onMouseEnter={() => setHoveredItem(item.name)}
@@ -89,13 +89,16 @@ function Sidebar() {
         </ul>
       </div>
 
-      {/* Logout Confirmation Modal */}
       {showLogoutModal && (
         <div style={styles.overlay}>
           <div style={styles.modal}>
-            <h3 style={{ marginBottom: "18px" }}>Are you sure you want to logout?</h3>
+            <h3 style={{ marginBottom: "18px" }}>
+              Are you sure you want to logout?
+            </h3>
 
-            <div style={{ display: "flex", justifyContent: "center", gap: "14px" }}>
+            <div
+              style={{ display: "flex", justifyContent: "center", gap: "14px" }}
+            >
               <button
                 style={styles.cancelBtn}
                 onClick={() => setShowLogoutModal(false)}
@@ -113,6 +116,7 @@ function Sidebar() {
   );
 }
 
+// 🎨 Styles
 const styles = {
   sidebar: {
     width: "100%",
@@ -125,7 +129,6 @@ const styles = {
   title: {
     height: "80px",
     display: "flex",
-    flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
     backgroundColor: "#000000ff",
@@ -145,10 +148,7 @@ const styles = {
     transition: "all 0.25s ease",
     borderRadius: "14px",
   },
-  itemContent: {
-    display: "flex",
-    alignItems: "center",
-  },
+  itemContent: { display: "flex", alignItems: "center" },
   iconWrapper: {
     width: "34px",
     height: "34px",
@@ -163,13 +163,9 @@ const styles = {
   itemText: { fontSize: "14px" },
   active: { backgroundColor: "#7C3AED", margin: "6px 12px" },
 
-  // Popup modal styles
   overlay: {
     position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
+    inset: 0,
     backgroundColor: "rgba(0,0,0,0.4)",
     display: "flex",
     justifyContent: "center",
@@ -186,8 +182,8 @@ const styles = {
   cancelBtn: {
     padding: "10px 18px",
     borderRadius: "8px",
-    border: "1px solid #999",
     background: "#f1f1f1",
+    border: "1px solid #999",
     cursor: "pointer",
   },
   logoutBtn: {

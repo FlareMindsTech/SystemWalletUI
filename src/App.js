@@ -12,7 +12,7 @@ function App() {
         {/* Public Route */}
         <Route path="/" element={<Login />} />
 
-        {/* Protected Layout Route */}
+        {/* Protected Routes */}
         <Route
           element={
             <ProtectedRoute>
@@ -20,8 +20,25 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/users" element={<UserManagement />} />
+          {/* ⭐ Admin Only */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* ⭐ User Only */}
+          <Route
+            path="/users"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <UserManagement />
+              </ProtectedRoute>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

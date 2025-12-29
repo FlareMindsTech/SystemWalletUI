@@ -1,110 +1,228 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-}
-.wallet-page {
-  background: #f7f7f7;
-  min-height: 100vh;
-}
 
-
-.content {
-  padding: 15px;
-  max-width: 850px;
-  margin: auto;
+.user-dashboard-container {
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #fff;
+    min-height: 100vh;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Wallet Card */
+
 .wallet-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.wallet-img {
-  width: 60px;
-}
-.label {
-  color: gray;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
 }
 
-/* Button */
+.wallet-info h3 {
+    font-size: 14px;
+    color: #000;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+}
+
+.wallet-amount {
+    font-size: 24px;
+    font-weight: 800;
+    color: #000;
+    margin: 0;
+}
+
+.wallet-icon-img {
+    width: 60px;
+    height: auto;
+    object-fit: contain;
+}
+
+/* --- 2. Request Transfer Button --- */
 .transfer-btn {
-  width: 100%;
-  background: #a407ff;
-  color: white;
-  padding: 14px;
-  border: none;
-  font-size: 16px;
-  border-radius: 25px;
-  margin-top: 15px;
-  cursor: pointer;
+    width: 100%;
+    background: #bf2ef0;
+    background: linear-gradient(90deg, #b02df0 0%, #d240f5 100%); 
+    border: none;
+    padding: 14px;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(191, 46, 240, 0.3);
+    transition: transform 0.2s;
 }
 
-/* Percent Row */
-.current-text {
-  margin-top: 25px;
-}
-.percent-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  font-size: 12px;
+.transfer-btn:active {
+    transform: scale(0.98);
 }
 
-/* Chart Section */
+
+.current-value-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 10px;
+}
+
+.stats-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+    overflow-x: auto; 
+    white-space: nowrap;
+}
+
+.stat-item {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* --- 4. Chart Section --- */
 .chart-container {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 10px;
-}
-.dropdown {
-  padding: 6px;
-  border-radius: 4px;
-}
-.chart-icons {
-  float: right;
-  font-size: 22px;
-  margin-top: -30px;
-}
-.chart-box {
-  margin-top: 20px;
-  height: 160px;
-  background: linear-gradient(#c1d3ff, #e9f0ff);
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    background: #f3f3f3; 
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 25px;
+    position: relative;
 }
 
-/* Status Card */
-.status-card {
-  margin-top: 20px;
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-}
-.status-card h4 {
-  margin: 0 0 6px;
+/* Chart Header  */
+.chart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-/* Desktop Responsive */
-@media (min-width: 768px) {
-  .content {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 22px;
-  }
+.currency-dropdown {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    outline: none;
+}
 
-  .transfer-btn {
-    width: 60%;
-  }
+.chart-toggles {
+    display: flex;
+    gap: 5px;
+    background: #fff;
+    padding: 3px;
+    border-radius: 6px;
+}
 
-  .status-card {
-    grid-column: span 2;
-  }
+.toggle-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.toggle-btn.active {
+    background-color: #bf2ef0; 
+    color: white;
+}
+
+.toggle-btn.inactive {
+    background-color: transparent;
+    color: #333;
+}
+
+/* Chart Visuals */
+.chart-visual-area {
+    height: 150px;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+}
+
+.chart-tooltip {
+    position: absolute;
+    top: 40%;
+    left: 10%;
+    background-color: #1f2937;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.chart-svg {
+    width: 100%;
+    height: 100px;
+  
+}
+
+/* --- 5. Request Status --- */
+.status-section h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 30px;
+}
+
+.no-request {
+    text-align: center;
+    color: #000;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* --- DESKTOP RESPONSIVE (Laptop View) --- */
+@media (min-width: 992px) {
+    .user-dashboard-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: start;
+        padding-top: 40px;
+    }
+
+   
+    .dashboard-left {
+        display: flex;
+        flex-direction: column;
+    }
+
+  
+    .dashboard-right {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wallet-card {
+        padding: 30px;
+    }
+    
+    .wallet-amount {
+        font-size: 32px;
+    }
+
+    .chart-container {
+        height: 100%;
+        min-height: 300px;
+    }
+    
+    .chart-visual-area {
+        height: 220px;
+    }
 }

@@ -9,6 +9,8 @@ import {
   MdEdit, 
   MdDeleteOutline 
 } from "react-icons/md";
+import { IoMdNotificationsOutline } from "react-icons/io";
+
 import { FiUpload } from "react-icons/fi";
 import toast from 'react-hot-toast';
 import './Admin.css'; 
@@ -18,7 +20,7 @@ function Dashboard() {
   const [activeModal, setActiveModal] = useState(null); 
   const [selectedMember, setSelectedMember] = useState(null);
   
-  // State for the Dropdown Menu
+
   const [activeMenuId, setActiveMenuId] = useState(null);
 
   // New Member Form State
@@ -260,24 +262,32 @@ function Dashboard() {
         </div>
       </div>
 
-      {/* --- RIGHT SECTION: REQUESTS --- */}
-      <div className="requests-section">
-        <div className="section-header">
-          <h2>Requests</h2>
+      
+     {/* --- RIGHT SECTION: REQUESTS --- */}
+<div className="requests-section">
+  <div className="section-header">
+    <h2>Requests</h2>
+    <div className="requests-bell">
+      <IoMdNotificationsOutline size={24} />
+      {requests.length > 0 && (
+        <span className="notification-count">{requests.length}</span>
+      )}
+    </div>
+  </div>
+  <div className="requests-list">
+    {requests.map((req, index) => (
+      <div key={index} className="request-item">
+        <div className="req-header">
+          <strong>{req.name}</strong>
+          <span className="req-time">{req.time}</span>
         </div>
-        <div className="requests-list">
-          {requests.map((req, index) => (
-            <div key={index} className="request-item">
-              <div className="req-header">
-                <strong>{req.name}</strong>
-                <span className="req-time">{req.time}</span>
-              </div>
-              <div className="req-type">{req.type}</div>
-              <div className="req-amount">{req.amount}</div>
-            </div>
-          ))}
-        </div>
+        <div className="req-type">{req.type}</div>
+        <div className="req-amount">{req.amount}</div>
       </div>
+    ))}
+  </div>
+</div>
+
 
 
 
@@ -420,7 +430,17 @@ function Dashboard() {
                 <img src={selectedMember.avatar} alt="avatar" className="profile-avatar" />
                 <h3>{selectedMember.name}</h3>
               </div>
+             
               <div className="form-group">
+                <label>Enter Amount</label>
+                <input 
+                  type="number" 
+                  placeholder="Enter Text" 
+                  value={addMoneyForm.amount}
+                  onChange={(e) => setAddMoneyForm({ ...addMoneyForm, amount: e.target.value })}
+                />
+              </div>
+               <div className="form-group">
                 <label>Conversion Currency</label>
                 <select 
                   value={addMoneyForm.currency}
@@ -431,15 +451,6 @@ function Dashboard() {
                   <option>Euros</option>
                   <option>Pounds</option>
                 </select>
-              </div>
-              <div className="form-group">
-                <label>Enter Amount</label>
-                <input 
-                  type="number" 
-                  placeholder="Enter Text" 
-                  value={addMoneyForm.amount}
-                  onChange={(e) => setAddMoneyForm({ ...addMoneyForm, amount: e.target.value })}
-                />
               </div>
               <p className="conversion-note">
                 {addMoneyForm.amount && `Amount enter ₹ ${(parseFloat(addMoneyForm.amount) * 89).toLocaleString()} converted amount $${parseFloat(addMoneyForm.amount).toLocaleString()}`}
