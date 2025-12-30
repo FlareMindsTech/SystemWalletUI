@@ -1,121 +1,119 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
 
 function Header({ isMobile }) {
   const username = "Vishnu AnandKannan";
-  const [searchOpen, setSearchOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [showCard, setShowCard] = useState(false);
+  const [confirmLogout, setConfirmLogout] = useState(false);
+  const cardRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
+    const handleClickOutside = (e) => {
+      if (cardRef.current && !cardRef.current.contains(e.target)) {
+        setShowCard(false);
+      }
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-
+  
+  const handleLogout = () => {
+    localStorage.clear();     
+    navigate("/");            
+  };
 
   return (
-    <div style={{
-      ...styles.header,
-      ...(scrolled && styles.headerScrolled),
-      width: '100%',
-      display: 'flex',
-      justifyContent: isMobile ? 'space-between' : 'flex-end',
-      alignItems: 'center',
-      gap: isMobile ? '10px' : '25px',
-      flexWrap: isMobile ? 'wrap' : 'nowrap',
-    }}>
+    <>
+      {/* HEADER */}
+      <div style={styles.headerContainer}>
+        <div style={styles.leftTitle}>SYSTEM WALLET</div>
 
-
-      {isMobile && (
-        <div style={styles.mobileLeftSection}>
-          <div style={styles.pageTitle}>SYSTEM WALLET</div>
-        </div>
-      )}
-
-      <div style={{
-        ...styles.rightSection,
-        gap: isMobile ? '15px' : '25px',
-        order: isMobile ? 2 : 'initial',
-      }}>
        
+        <div style={{ position: "relative" }}>
+          <div
+            style={styles.profile}
+            onClick={() => setShowCard(!showCard)}
+          >
+            <div style={styles.avatarContainer}>
+              <div style={styles.avatar}>{username.charAt(0)}</div>
+              <div style={styles.statusIndicator} />
+            </div>
 
-
-        {(!isMobile || (isMobile && !searchOpen)) && (
-          <div style={styles.profile}>
-
-            {(!isMobile || window.innerWidth > 400) && (
-              <div style={styles.avatarContainer}>
-                <div style={styles.avatar}>{username.charAt(0)}</div>
-                <div style={styles.statusIndicator} />
-              </div>
-            )}
-         
             {!isMobile && (
               <div style={styles.profileInfo}>
                 <div style={styles.name}>
-                  {username.length > 20 ? username.substring(0, 17) + '...' : username}
+                  {username.length > 20 ? username.substring(0, 17) + "..." : username}
                 </div>
                 <div style={styles.role}>Admin</div>
               </div>
             )}
-           
-            {(!isMobile || window.innerWidth > 400) && (
-              <span style={styles.dropdownIcon}>⌄</span>
-            )}
+
+            <span style={styles.dropdownIcon}>⌄</span>
           </div>
-        )}
+
+        
+          {showCard && (
+            <div ref={cardRef} style={styles.dropdownCard}>
+              <h4 style={{ marginBottom: "6px" }}>Profile</h4>
+              <p><b>Name:</b> {username}</p>
+              <p><b>Role:</b> Admin</p>
+              <p><b>Email:</b> example@gmail.com</p>
+
+              <button
+                style={styles.logoutBtn}
+                onClick={() => setConfirmLogout(true)}
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-    </div>
+      {/* CONFIRM LOGOUT POPUP */}
+      {confirmLogout && (
+        <div style={styles.confirmOverlay}>
+          <div style={styles.confirmBox}>
+            <p style={{ fontWeight: "600" }}>
+              Are you sure you want to logout?
+            </p>
+
+            <div style={{ display: "flex", gap: "10px", marginTop: "15px" }}>
+              <button style={styles.confirmYes} onClick={handleLogout}>Yes</button>
+              <button
+                style={styles.confirmNo}
+                onClick={() => setConfirmLogout(false)}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
+
+/* ---------- STYLES ---------- */
 const styles = {
-  header: {
-    height: "100%",
+  headerContainer: {
+    width: "100%",
+    height: "60px",
     padding: "0 20px",
-    backgroundColor: "#020203ff",
+    backgroundColor: "#AF28FF",
     color: "white",
-    borderBottom: "1px solid #2d2d40",
-    transition: 'all 0.3s ease',
-  },
-
-  headerScrolled: {
-    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
-  },
-
-  mobileLeftSection: {
-    display: 'flex',
-    alignItems: 'center',
-    minWidth: 'fit-content',
-  },
-
-  pageTitle: {
-    fontSize: '16px',
-    fontWeight: '600',
-    color: '#e0e0f0',
-    marginRight: '15px',
-  },
-
-
-  rightSection: {
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "center",
-    minWidth: 'fit-content',
+    //borderBottom: "1px solid #2d2d40",
+    boxSizing: "border-box",
   },
-
-  iconButton: {
-    position: "relative",
-    cursor: "pointer",
-    padding: "8px",
-    borderRadius: "6px",
-    fontSize: '18px',
-    transition: "background-color 0.2s",
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+  leftTitle: {
+    fontSize: "18px",
+    fontWeight: "600",
   },
   profile: {
     display: "flex",
@@ -123,22 +121,16 @@ const styles = {
     cursor: "pointer",
     padding: "6px 10px",
     borderRadius: "8px",
-    transition: "background-color 0.2s",
-    ':hover': {
-      backgroundColor: "#040405ff",
-    },
   },
-
   avatarContainer: {
     position: "relative",
-    marginRight: '8px',
+    marginRight: "8px",
   },
-
   avatar: {
-    width: "32px",
-    height: "32px",
+    width: "34px",
+    height: "34px",
     borderRadius: "50%",
-    backgroundColor: "#4f46e5",
+    backgroundColor: "#4c0675ff",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -146,7 +138,6 @@ const styles = {
     fontSize: "14px",
     color: "white",
   },
-
   statusIndicator: {
     position: "absolute",
     bottom: "0",
@@ -155,40 +146,76 @@ const styles = {
     height: "8px",
     backgroundColor: "#10b981",
     borderRadius: "50%",
-    border: "2px solid #1e1e2f",
+  },
+  profileInfo: { marginRight: "8px" },
+  name: { fontSize: "14px", fontWeight: "600" },
+  role: { fontSize: "11px", color: "#bbbbbb" },
+  dropdownIcon: { marginLeft: "6px" },
+
+  dropdownCard: {
+    position: "absolute",
+    top: "55px",
+    right: "0",
+    width: "250px",
+    backgroundColor: "white",
+    color: "#333",
+    padding: "18px",
+    borderRadius: "10px",
+    boxShadow: "0 6px 16px rgba(0,0,0,0.20)",
+    zIndex: 999,
   },
 
-  profileInfo: {
-    marginLeft: "8px",
-    marginRight: "8px",
-  },
-
-  name: {
-    fontSize: "14px",
+  logoutBtn: {
+    marginTop: "18px",
+    padding: "10px",
+    width: "100%",
+    backgroundColor: "#AF28FF",
+    border: "none",
+    color: "white",
+    borderRadius: "6px",
     fontWeight: "600",
-    color: "#e0e0f0",
-    whiteSpace: 'nowrap',
+    cursor: "pointer",
   },
 
-  role: {
-    fontSize: "11px",
-    color: "#a0a0c0",
-    marginTop: "2px",
-  },
+confirmOverlay: {
+  position: "fixed",
+  inset: 0,
+  backgroundColor: "rgba(0,0,0,0.6)", 
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  zIndex: 2500,
+},
+ confirmBox: {
+  background: "white",
+  color: "#000",          
+  padding: "25px",
+  borderRadius: "10px",
+  width: "280px",
+  textAlign: "center",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.20)",
+  zIndex: 3000,           
+},
 
-  dropdownIcon: {
-    fontSize: '18px',
-    color: '#a0a0c0',
-    marginLeft: '5px',
-    display: 'flex',
-    alignItems: 'center',
+  confirmYes: {
+    flex: 1,
+    backgroundColor: "#ef4444",
+    color: "white",
+    border: "none",
+    padding: "9px",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "600",
+  },
+  confirmNo: {
+    flex: 1,
+    backgroundColor: "#ddd",
+    border: "none",
+    padding: "9px",
+    borderRadius: "6px",
+    cursor: "pointer",
+    fontWeight: "600",
   },
 };
-
-Object.assign(styles.iconButton, {
-  ':hover': {
-    backgroundColor: "#070707ff",
-  },
-});
 
 export default Header;

@@ -9,10 +9,10 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public Route */}
+     
         <Route path="/" element={<Login />} />
 
-        {/* Protected Routes */}
+      
         <Route
           element={
             <ProtectedRoute>
@@ -20,7 +20,7 @@ function App() {
             </ProtectedRoute>
           }
         >
-          {/* ⭐ Admin Only */}
+          
           <Route
             path="/dashboard"
             element={
@@ -30,7 +30,7 @@ function App() {
             }
           />
 
-          {/* ⭐ User Only */}
+     
           <Route
             path="/users"
             element={

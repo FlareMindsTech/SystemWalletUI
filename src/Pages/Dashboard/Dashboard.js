@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { 
   IoMdAdd, 
-  IoMdClose 
+  IoMdClose,
+  IoMdRemove, 
 } from "react-icons/io";
 import { 
   MdGridView, 
@@ -10,18 +11,17 @@ import {
   MdDeleteOutline 
 } from "react-icons/md";
 import { IoMdNotificationsOutline } from "react-icons/io";
-
 import { FiUpload } from "react-icons/fi";
 import toast from 'react-hot-toast';
 import './Admin.css'; 
 
 function Dashboard() {
-  // --- STATE MANAGEMENT ---
+  
   const [activeModal, setActiveModal] = useState(null); 
   const [selectedMember, setSelectedMember] = useState(null);
-  
-
+  const [amount, setAmount] = useState("");
   const [activeMenuId, setActiveMenuId] = useState(null);
+  const [hoveredMemberId, setHoveredMemberId] = useState(null); 
 
   // New Member Form State
   const [newMemberForm, setNewMemberForm] = useState({
@@ -41,7 +41,8 @@ function Dashboard() {
     amount: ''
   });
 
- 
+
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest('.menu-container')) {
@@ -52,24 +53,35 @@ function Dashboard() {
     return () => document.removeEventListener('click', handleClickOutside);
   }, []);
 
- 
   const [members, setMembers] = useState([
-    { id: 1, name: 'Zoya Blanchard', memberId: 'ARRA109485', email: 'zoya.blanchard@example.com', phone: '444-555-6666', avatar: 'https://i.pravatar.cc/150?u=1', password: 'Abcd@12345', panCard: 'ABCDE1234F', aadhar: '1234 1234 1234 1234' },
-    { id: 2, name: 'Kiaan Dorsey', memberId: 'ARRA957392', email: 'kiaan.dorsey@example.com', phone: '555-666-7777', avatar: 'https://i.pravatar.cc/150?u=2', password: 'Xyz@67890', panCard: 'FGHIJ5678K', aadhar: '5678 5678 5678 5678' },
-    { id: 3, name: 'Anya Hamer', memberId: 'ARRA846295', email: 'anya.hamer@example.com', phone: '666-777-8888', avatar: 'https://i.pravatar.cc/150?u=3', password: 'Pass@9012', panCard: 'KLMNO9012P', aadhar: '9012 9012 9012 9012' },
-    { id: 4, name: 'Amara Rowland', memberId: 'ARRA736482', email: 'amara.rowland@example.com', phone: '777-888-9999', avatar: 'https://i.pravatar.cc/150?u=4', password: 'Test@3456', panCard: 'QRSTU3456V', aadhar: '3456 3456 3456 3456' },
-    { id: 5, name: 'Euan Buckner', memberId: 'ARRA638591', email: 'euan.buckner@example.com', phone: '888-999-0000', avatar: 'https://i.pravatar.cc/150?u=5', password: 'Demo@7890', panCard: 'WXYZAB7890', aadhar: '7890 7890 7890 7890' },
+    { id: 1, name: 'Zoya Blanchard', memberId: 'ARRA109485', email: 'zoya.blanchard@example.com', phone: '444-555-6666', avatar: 'https://i.pravatar.cc/150?u=1', password: 'Abcd@12345', panCard: 'ABCDE1234F', aadhar: '1234 1234 1234 1234', balance: 1000 },
+    { id: 2, name: 'Kiaan Dorsey', memberId: 'ARRA957392', email: 'kiaan.dorsey@example.com', phone: '555-666-7777', avatar: 'https://i.pravatar.cc/150?u=2', password: 'Xyz@67890', panCard: 'FGHIJ5678K', aadhar: '5678 5678 5678 5678', balance: 2000 },
+    { id: 3, name: 'Anya Hamer', memberId: 'ARRA846295', email: 'anya.hamer@example.com', phone: '666-777-8888', avatar: 'https://i.pravatar.cc/150?u=3', password: 'Pass@9012', panCard: 'KLMNO9012P', aadhar: '9012 9012 9012 9012', balance: 1500 },
+    { id: 4, name: 'Amara Rowland', memberId: 'ARRA736482', email: 'amara.rowland@example.com', phone: '777-888-9999', avatar: 'https://i.pravatar.cc/150?u=4', password: 'Test@3456', panCard: 'QRSTU3456V', aadhar: '3456 3456 3456 3456', balance: 3000 },
+    { id: 5, name: 'Euan Buckner', memberId: 'ARRA638591', email: 'euan.buckner@example.com', phone: '888-999-0000', avatar: 'https://i.pravatar.cc/150?u=5', password: 'Demo@7890', panCard: 'WXYZAB7890', aadhar: '7890 7890 7890 7890', balance: 2500 },
   ]);
 
   const requests = [
-    { id: 1, name: 'Name', type: 'Withdrawal Request', amount: '$ 250', time: '10 Mins Ago' },
-    { id: 2, name: 'Name', type: 'Withdrawal Request', amount: '$ 250', time: '10 Mins Ago' },
-    { id: 3, name: 'Name', type: 'Withdrawal Request', amount: '$ 250', time: '10 Mins Ago' },
-    { id: 4, name: 'Name', type: 'Withdrawal Request', amount: '$ 250', time: '10 Mins Ago' },
-    { id: 5, name: 'Name', type: 'Withdrawal Request', amount: '$ 250', time: '10 Mins Ago' },
+    { id: 1, name: 'Name', type: 'Transfer Request', amount: '$ 250', time: '10 Mins Ago' },
+    { id: 2, name: 'Name', type: 'Transfer Request', amount: '$ 250', time: '10 Mins Ago' },
+    { id: 3, name: 'Name', type: 'Transfer Request', amount: '$ 250', time: '10 Mins Ago' },
+    { id: 4, name: 'Name', type: 'Transfer Request', amount: '$ 250', time: '10 Mins Ago' },
+    { id: 5, name: 'Name', type: 'Transfer Request', amount: '$ 250', time: '10 Mins Ago' },
   ];
 
-  
+  const handleDeduct = (id, amt) => {
+    if (!amt) return toast.error("Enter amount");
+
+    setMembers(prev =>
+      prev.map(m =>
+        m.id === id ? { ...m, balance: (m.balance || 0) - Number(amt) } : m
+      )
+    );
+
+    toast.success(`$${amt} deducted successfully`);
+    closeModal();
+  };
+
   const handleOpenAddMoney = (member) => {
     setSelectedMember(member);
     setAddMoneyForm({ currency: 'Dollars', amount: '' });
@@ -98,6 +110,8 @@ function Dashboard() {
   const closeModal = () => {
     setActiveModal(null);
     setSelectedMember(null);
+    setAmount(""); 
+    setHoveredMemberId(null); 
   };
 
   const toggleMenu = (e, id) => {
@@ -122,6 +136,11 @@ function Dashboard() {
     }
   };
 
+  const handleOpenDeduct = (member) => {
+    setSelectedMember(member);
+    setActiveModal("deduct");
+  };
+
   const handleAddMember = () => {
     if (!newMemberForm.name || !newMemberForm.email || !newMemberForm.phone) {
       toast.error('Please fill all required fields');
@@ -137,7 +156,8 @@ function Dashboard() {
       avatar: `https://i.pravatar.cc/150?u=${members.length + 1}`,
       password: 'Default@123',
       panCard: newMemberForm.panCard || 'N/A',
-      aadhar: newMemberForm.aadharNo || 'N/A'
+      aadhar: newMemberForm.aadharNo || 'N/A',
+      balance: 0 
     };
     
     setMembers([...members, newMember]);
@@ -150,6 +170,16 @@ function Dashboard() {
       toast.error('Please enter an amount');
       return;
     }
+    
+    // Update member's balance
+    setMembers(prev =>
+      prev.map(m =>
+        m.id === selectedMember.id 
+          ? { ...m, balance: (m.balance || 0) + Number(addMoneyForm.amount) } 
+          : m
+      )
+    );
+    
     toast.success(`$${addMoneyForm.amount} added to ${selectedMember.name}'s account!`);
     closeModal();
   };
@@ -206,8 +236,6 @@ function Dashboard() {
 
   return (
     <div className="user-management-container">
-      
-
       <div className="members-section">
         <div className="section-header">
           <h2>Members</h2>
@@ -218,43 +246,76 @@ function Dashboard() {
 
         <div className="members-list">
           {members.map((member) => (
-            <div key={member.id} className="member-row">
+            <div 
+              key={member.id} 
+              className={`member-row ${hoveredMemberId === member.id ? 'hovered' : ''}`}
+              onClick={() => handleOpenViewDashboard(member)} 
+              onMouseEnter={() => setHoveredMemberId(member.id)}
+              onMouseLeave={() => setHoveredMemberId(null)}
+              style={{ cursor: 'pointer' }}
+            >
               <div className="member-info">
                 <img src={member.avatar} alt="avatar" className="avatar" />
-                <span className="member-name">{member.name}</span>
+                <div>
+                  <span className="member-name">{member.name}</span>
+                  <div className="member-balance">Balance: ${member.balance || 0}</div>
+                </div>
               </div>
               <span className="member-id">{member.memberId}</span>
               <span className="member-email">{member.email}</span>
               <span className="member-phone">{member.phone}</span>
               
-              <div className="actions">
-              
-                <button className="action-btn" onClick={() => handleOpenAddMoney(member)}>
-                  <IoMdAdd size={18} />
-                  <span className="tooltip-text">Add Money</span>
-                </button>
+              <div className="actions" onClick={(e) => e.stopPropagation()}>
+                <div className="addmoney-menu-wrapper">
+                  <button
+                    className="action-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveMenuId(activeMenuId === "add" + member.id ? null : "add" + member.id);
+                      setSelectedMember(member);
+                    }}
+                  >
+                     <span className="icon-group">
+    <IoMdAdd size={15} /> |
+    <IoMdRemove size={15} />
+  </span>
+                    <span className="tooltip-text">Add Money | Transfer Money</span>
+                  </button>
 
-                <button className="action-btn" onClick={() => handleOpenViewDashboard(member)}>
+                  {activeMenuId === "add" + member.id && (
+                    <div className="addmoney-menu">
+                      <div className="add-item" onClick={() => handleOpenAddMoney(member)}>
+                        + Add Money
+                      </div>
+                      <div className="add-item subtract" onClick={() => handleOpenDeduct(member)}>
+                        - Transfer Money
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                <button className="action-btn" onClick={(e) => {
+                  e.stopPropagation();
+                  handleOpenViewDashboard(member);
+                }}>
                   <MdGridView size={18} />
                   <span className="tooltip-text">View Dashboard</span>
                 </button>
 
-             
                 <div className="menu-container">
                   <button className="action-btn" onClick={(e) => toggleMenu(e, member.id)}>
                     <MdMoreVert size={18} />
                   </button>
-                  
-                  {activeMenuId === member.id && (
-                    <div className="dropdown-menu">
-                      <div className="dropdown-item" onClick={() => handleEditMember(member)}>
-                        <MdEdit /> Edit
-                      </div>
-                      <div className="dropdown-item" onClick={() => handleDeleteMember(member)}>
-                        <MdDeleteOutline /> Delete
-                      </div>
-                    </div>
-                  )}
+              {activeMenuId === member.id && (
+  <div className="popup-menu">
+    <button className="popup-item">
+      <MdEdit size={16} /> Edit
+    </button>
+    <button className="popup-item delete">
+      <MdDeleteOutline size={16} /> Delete
+    </button>
+  </div>
+)}
                 </div>
               </div>
             </div>
@@ -262,36 +323,72 @@ function Dashboard() {
         </div>
       </div>
 
-      
-     {/* --- RIGHT SECTION: REQUESTS --- */}
-<div className="requests-section">
-  <div className="section-header">
-    <h2>Requests</h2>
-    <div className="requests-bell">
-      <IoMdNotificationsOutline size={24} />
-      {requests.length > 0 && (
-        <span className="notification-count">{requests.length}</span>
-      )}
-    </div>
-  </div>
-  <div className="requests-list">
-    {requests.map((req, index) => (
-      <div key={index} className="request-item">
-        <div className="req-header">
-          <strong>{req.name}</strong>
-          <span className="req-time">{req.time}</span>
+      {/* Deduct Money Modal */}
+      {activeModal === "deduct" && selectedMember && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content modal-md" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-title">Transfer / Deduct Money</div>
+              <IoMdClose className="modal-close-icon" onClick={closeModal} />
+            </div>
+
+            <div className="modal-body">
+              <h3>{selectedMember.name}</h3>
+              <p className="available-balance">Available Balance: ${selectedMember.balance || 0}</p>
+
+              <input 
+                type="number" 
+                placeholder="Enter amount" 
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
+
+              {amount && (
+                <p className="new-balance">New Balance: ${(selectedMember.balance || 0) - Number(amount)}</p>
+              )}
+            </div>
+
+            <div className="modal-footer">
+              <button className="btn-cancel" onClick={closeModal}>
+                <IoMdClose /> Cancel
+              </button>
+              <button 
+                className="btn-submit"
+                onClick={() => handleDeduct(selectedMember.id, amount)}
+              >
+                <IoMdAdd /> Deduct
+              </button>
+            </div>
+          </div>
         </div>
-        <div className="req-type">{req.type}</div>
-        <div className="req-amount">{req.amount}</div>
+      )}
+      
+      {/* Right Section: Requests */}
+      <div className="requests-section">
+        <div className="section-header">
+          <h2>Requests</h2>
+          <div className="requests-bell">
+            <IoMdNotificationsOutline size={24} />
+            {requests.length > 0 && (
+              <span className="notification-count">{requests.length}</span>
+            )}
+          </div>
+        </div>
+        <div className="requests-list">
+          {requests.map((req, index) => (
+            <div key={index} className="request-item">
+              <div className="req-header">
+                <strong>{req.name}</strong>
+                <span className="req-time">{req.time}</span>
+              </div>
+              <div className="req-type">{req.type}</div>
+              <div className="req-amount">{req.amount}</div>
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
 
-
-
-
-      {/* 1. NEW MEMBER MODAL */}
+      {/* New Member Modal */}
       {activeModal === 'newMember' && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content modal-lg" onClick={(e) => e.stopPropagation()}>
@@ -301,6 +398,7 @@ function Dashboard() {
             </div>
             
             <div className="modal-body">
+              <div className="modal-body">
               <div className="form-row">
                 <div className="form-group">
                   <label>User Id</label>
@@ -405,6 +503,8 @@ function Dashboard() {
               </div>
             </div>
 
+            </div>
+
             <div className="modal-footer">
               <button className="btn-cancel" onClick={closeModal}>
                  <IoMdClose /> Cancel
@@ -417,7 +517,7 @@ function Dashboard() {
         </div>
       )}
 
-      {/* 2. ADD MONEY MODAL */}
+      {/* Add Money Modal */}
       {activeModal === 'addMoney' && selectedMember && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content modal-md" onClick={(e) => e.stopPropagation()}>
@@ -464,7 +564,7 @@ function Dashboard() {
         </div>
       )}
 
-      {/* 3. VIEW DASHBOARD MODAL */}
+      {/* View Dashboard Modal */}
       {activeModal === 'viewDashboard' && selectedMember && (
         <div className="modal-overlay" onClick={closeModal}>
           <div className="modal-content modal-md view-profile-modal" onClick={(e) => e.stopPropagation()}>
@@ -475,7 +575,10 @@ function Dashboard() {
             <div className="modal-body">
               <div className="view-profile-header">
                 <img src={selectedMember.avatar} alt="avatar" className="profile-avatar-large" />
-                <h3 className="profile-name">{selectedMember.name}</h3>
+                <div>
+                  <h3 className="profile-name">{selectedMember.name}</h3>
+                  <p className="profile-balance">Balance: ${selectedMember.balance || 0}</p>
+                </div>
               </div>
               
               <div className="profile-details">
@@ -543,7 +646,6 @@ function Dashboard() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
