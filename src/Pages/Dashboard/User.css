@@ -292,3 +292,380 @@
     .chart-container { min-height: 320px; }
     .chart-visual-area { height: 220px; }
 }
+
+/* =========== DESKTOP VIEW STYLES =========== */
+@media (min-width: 1024px) {
+  .user-dashboard-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 24px 30px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  /* Top Bar */
+  .topbar {
+    margin-bottom: 10px;
+  }
+
+  .brand {
+    font-size: 18px;
+  }
+
+  .top-actions {
+    gap: 14px;
+  }
+
+  .notif,
+  .theme-toggle {
+    height: 38px;
+    padding: 0 16px;
+  }
+
+  .avatar-chip {
+    padding: 8px 16px;
+  }
+
+  /* Current Value Strip */
+  .current-strip {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 18px 24px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+
+  .current-strip > span:first-child {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text-primary);
+    white-space: nowrap;
+  }
+
+  .strip-values {
+    display: flex;
+    gap: 40px;
+    overflow-x: auto;
+    padding: 0 10px;
+  }
+
+  .strip-values span {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  /* Main Desktop Grid - 3 Columns */
+  .desktop-main {
+    display: grid;
+    grid-template-columns: 1.2fr 2fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+    margin-bottom: 24px;
+  }
+
+  /* Wallet Card - Left Column */
+  .wallet-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    min-height: 300px;
+  }
+
+  .wallet-card h3 {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin: 0 0 12px 0;
+    font-weight: 600;
+  }
+
+  .wallet-amount {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 30px 0;
+  }
+
+  .wallet-icon-img {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 70px;
+    height: auto;
+  }
+
+  .transfer-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    padding: 18px;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #fff;
+    margin-top: auto;
+    box-shadow: 0 10px 30px rgba(176, 45, 240, 0.25);
+  }
+
+  .transfer-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 35px rgba(176, 45, 240, 0.35);
+  }
+
+  /* Chart Container - Middle Column */
+  .chart-container {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    min-height: 300px;
+  }
+
+  .chart-header {
+    margin-bottom: 24px;
+  }
+
+  .currency-dropdown {
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+    outline: none;
+    min-width: 140px;
+    cursor: pointer;
+  }
+
+  .chart-visual-area {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .chart-tooltip {
+    position: absolute;
+    top: 25%;
+    left: 12%;
+    background-color: var(--card-bg);
+    color: #76f1ae;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 800;
+    border: 1px solid rgba(118, 241, 174, 0.4);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    z-index: 2;
+  }
+
+  .chart-svg {
+    width: 100%;
+    height: 180px;
+  }
+
+  /* Stats Card - Right Column */
+  .stats-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+    min-height: 300px;
+  }
+
+  .stats-card p {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--card-border);
+  }
+
+  .stats-card p:last-child {
+    border-bottom: none;
+  }
+
+  .stats-card p strong {
+    font-size: 15px;
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .stats-card p span {
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .stats-card .down {
+    color: #ff4d4f;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .stats-card .down .arrow {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  /* Request Status Section */
+  .status-section {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .status-section h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 18px 0;
+  }
+
+  .status-section p {
+    color: var(--text-secondary);
+    font-weight: 600;
+    margin: 0;
+    font-size: 15px;
+  }
+
+  /* Withdrawal List Section */
+  .withdrawal-list {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  }
+
+  .withdrawal-list h3 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 0 0 20px 0;
+  }
+
+  .withdrawal-list p {
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 40px 0;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  /* Hide mobile-specific elements */
+  .mobile-only,
+  .view-toggle {
+    display: none !important;
+  }
+}
+
+/* =========== MOBILE VIEW OVERRIDES =========== */
+@media (max-width: 1023px) {
+  .desktop-main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .current-strip {
+    display: none; /* Hide current strip on mobile */
+  }
+
+  .stats-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  /* Show mobile toggle buttons */
+  .view-toggle {
+    display: flex;
+    background: var(--chip-bg);
+    padding: 4px;
+    border-radius: 10px;
+    gap: 4px;
+  }
+
+  .view-toggle button {
+    border: none;
+    background: transparent;
+    padding: 8px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-secondary);
+  }
+
+  .view-toggle button.active {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .inner-stats {
+    padding: 20px;
+  }
+}
+
+/* =========== DARK THEME ENHANCEMENTS =========== */
+.user-dashboard-container.dark {
+  .current-strip {
+    background: #1a1335;
+  }
+  
+  .chart-tooltip {
+    background-color: #2d2250;
+    color: #76f1ae;
+  }
+  
+  .transfer-btn {
+    box-shadow: 0 10px 30px rgba(246, 40, 200, 0.25);
+  }
+  
+  .transfer-btn:hover {
+    box-shadow: 0 15px 35px rgba(246, 40, 200, 0.35);
+  }
+}
+
+/* =========== UTILITY CLASSES =========== */
+.error-text {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* Smooth transitions */
+.wallet-card,
+.chart-container,
+.stats-card,
+.status-section,
+.withdrawal-list {
+  transition: all 0.3s ease;
+}
