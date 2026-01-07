@@ -1,5 +1,6 @@
 import { Navigate } from "react-router-dom";
 
+// Producted Routes
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const auth = localStorage.getItem("auth");
   const role = localStorage.getItem("role");
