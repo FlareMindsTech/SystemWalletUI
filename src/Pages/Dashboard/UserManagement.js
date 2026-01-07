@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { MdLightMode, MdDarkMode, MdGridView, MdTableChart } from "react-icons/md";
 import Marquee from "react-fast-marquee";
 import axios from "axios";
@@ -10,6 +10,7 @@ function UserManagement() {
   const [viewMode, setViewMode] = useState("chart");
   const [currencyData, setCurrencyData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [hasLoadedOnce, setHasLoadedOnce] = useState(false);
 
   const chartPoints = useMemo(
     () => [52, 46, 14, 30, 35, 28, 32, 40, 46, 38, 36, 41, 45, 42, 37, 9],
@@ -25,7 +26,9 @@ function UserManagement() {
   useEffect(() => {
     const fetchRates = async () => {
       try {
-        setLoading(true);
+        if (!hasLoadedOnce) {
+          setLoading(true);
+        }
         const response = await axios.get('https://api.exchangerate-api.com/v4/latest/USD');
         const rates = response.data.rates;
         const usdToInr = rates.INR;
@@ -34,28 +37,30 @@ function UserManagement() {
         const formattedData = targetCurrencies.map(code => {
           const rateAgainstUsd = rates[code];
           const valueInInr = usdToInr / rateAgainstUsd;
+          const highVal = valueInInr * 1.0035; 
           return {
             code: code,
             symbol: currencySymbols[code] || code,
             value: valueInInr.toFixed(2),
-            change: (Math.random() * 0.5 + 0.1).toFixed(2),
-            high: (valueInInr + (Math.random() * 0.5)).toFixed(2),
-            isUp: Math.random() > 0.4
+            change: "0.25",
+            high: highVal.toFixed(2),
+            isUp: true
           };
         });
 
         setCurrencyData(formattedData);
+        setHasLoadedOnce(true);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching currency:", error);
-        setLoading(false);
+        if (!hasLoadedOnce) {
+          setLoading(false);
+        }
       }
     };
 
     fetchRates();
-    const interval = setInterval(fetchRates, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  }, [currencySymbols, hasLoadedOnce]);
 
   const toggleTheme = () => setTheme((prev) => (prev === "light" ? "dark" : "light"));
 
@@ -95,9 +100,13 @@ function UserManagement() {
                 <span className="currency-high">
                   # {item.high}
                 </span>
-                <span className="separator">|</span>
+                {index !== currencyData.length - 1 && (
+                  <span className="separator">|</span>
+                )}
               </div>
             ))
+          ) : hasLoadedOnce ? (
+            <span className="loading-text">Unable to load rates</span>
           ) : (
             <span className="loading-text">Loading live rates...</span>
           )}
